@@ -1,0 +1,186 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <!-- Link to external CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        /* General reset and styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Full Page Layout */
+        body {
+            background: linear-gradient(to right, #f7c5fc, #0072ff);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .signup-container {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            padding: 40px 50px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .signup-container:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .signup-container h2 {
+            font-size: 2.4rem;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 700;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .signup-container p {
+            font-size: 1.1rem;
+            color: #6c757d;
+            margin-bottom: 30px;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        /* Input Field Styling */
+        .input-field {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-field input {
+            width: 100%;
+            padding: 14px 40px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .input-field input:focus {
+            border-color: #0072ff;
+            box-shadow: 0 0 8px rgba(0, 114, 255, 0.6);
+        }
+
+        .input-field .icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #0072ff;
+        }
+
+        /* Submit Button Styling */
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to right, #0072ff, #00c6ff);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.3s ease;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-submit:hover {
+            background: linear-gradient(to right, #0056b3, #00b0ff);
+            transform: scale(1.05);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Link Styling for "Already have an account?" */
+        .already-account {
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+
+        .already-account a {
+            color: #0072ff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .already-account a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive design */
+        @media (max-width: 480px) {
+            .signup-container {
+                padding: 30px 20px;
+            }
+
+            .signup-container h2 {
+                font-size: 1.9rem;
+            }
+
+            .input-field input {
+                padding: 12px 35px;
+                font-size: 1rem;
+            }
+
+.btn-submit {
+                font-size: 1.1rem;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="signup-form">
+            <h2>Signup</h2>
+            
+            <form method="POST" action="{% url 'signup' %}">
+                {% csrf_token %}
+                <div class="input-field">
+                    <input type="text" name="username" placeholder="Enter Username" required />
+                    <span class="icon"><i class="fa fa-user"></i></span>
+                </div>
+                <div class="input-field">
+                    <input type="email" name="email" placeholder="Enter Email" required />
+                    <span class="icon"><i class="fa fa-envelope"></i></span>
+                </div>
+                <div class="input-field">
+                    <input type="password" name="password1" placeholder="Enter Password" required />
+                    <span class="icon"><i class="fa fa-lock"></i></span>
+                </div>
+                <div class="input-field">
+                    <input type="password" name="password2" placeholder="Confirm Password" required />
+                    <span class="icon"><i class="fa fa-lock"></i></span>
+                </div>
+                <button type="submit" class="btn-submit">Signup</button>
+            </form>
+            <p class="already-account">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+        </div>
+    </div>
+</body>
+</html>

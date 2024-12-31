@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+/* General Feed Styling */
+.text-center.mb-4 {
+    text-align: center;
+    margin-bottom: 3rem;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+/* Feed container */
+.feed-container {
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Card component */
+.card {
+    border: none;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Header section of the post */
+.card-header {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #f1f1f1;
+    background-color: #fff;
+}
+
+.card-header img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.card-header h5 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Post content section */
+.card-body {
+    padding: 15px;
+    font-family: 'Verdana', sans-serif;
+    color: #444;
+}
+
+.card-body p {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+/* Image styling inside the card */
+.card-body img.img-fluid {
+    border-radius: 8px;
+    margin-top: 10px;
+    width: 100%;
+    object-fit: cover;
+    height: 400px;
+}
+
+/* Like and comment buttons */
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #f1f1f1;
+}
+
+.card-footer .btn {
+    border: none;
+    background-color: transparent;
+    color: #007bff;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.card-footer .btn:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* Date and username styling */
+.card-footer small {
+    color: #888;
+    font-style: italic;
+    font-size: 12px;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    .feed-container {
+        padding: 10px;
+    }
+
+    .card-body img.img-fluid {
+        height: 300px;
+    }
+}
+</style>
+
+<div class="feed-container">
+    
+
+    {% for post in posts %}
+    <div class="card">
+        <div class="card-header">
+            {% if post.user.profile.profile_picture %}
+            <img src="{{ post.user.profile.profile_picture.url }}" alt="Profile Picture">
+            {% else %}
+            <img src="{% static 'default-profile.png' %}" alt="Default Profile Picture">
+            {% endif %}
+            <h5>{{ post.user.username }}</h5>
+        </div>
+        <div class="card-body">
+            <p>{{ post.content }}</p>
+            {% if post.image %}
+            <img src="{{ post.image.url }}" class="img-fluid" alt="Post Image">
+            {% endif %}
+        </div>
+        <div class="card-footer">
+            <p>
+                <!-- Display like/unlike button based on whether the current user has liked the post -->
+                <a href="{% url 'like_post' post.id %}" class="btn">
+                    <i class="fas fa-thumbs-up"></i> 
+                    {% if post.has_liked %}
+                        Unlike
+                    {% else %}
+                        Like
+                    {% endif %}
+                </a>
+                <!-- Display the like count -->
+                ({{ post.like_count }})
+                
+                <a href="{% url 'comment_on_post' post.id %}" class="btn">
+                    <i class="fas fa-comment"></i> Comment
+                </a>
+            </p>
+            <small>Posted on: {{ post.created_at }}</small>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

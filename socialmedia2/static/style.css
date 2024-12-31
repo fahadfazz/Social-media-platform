@@ -1,0 +1,23 @@
+body {
+    background-color: hsla(209, 93%, 5%, 0.542);
+}
+
+.navbar {
+    margin-bottom: 20px;
+}
+
+.card {
+    background-color: #1a1919c5;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(192, 9, 9, 0.922);
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}

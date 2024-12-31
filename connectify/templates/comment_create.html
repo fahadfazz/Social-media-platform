@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+/* Post container */
+.post-container {
+    max-width: 600px;
+    margin: 20px auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+/* Post content */
+.post-header, .post-body {
+    padding: 15px;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+}
+
+.post-header img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.post-header h5 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.post-body img {
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.post-body p {
+    font-size: 14px;
+    color: #555;
+    margin-top: 10px;
+}
+
+/* Comments section */
+.comments-section {
+    padding: 15px;
+    border-top: 1px solid #ddd;
+}
+
+.comment {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.comment img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.comment-content {
+    background-color: #f9f9f9;
+    padding: 8px 12px;
+    border-radius: 15px;
+    font-size: 14px;
+    color: #333;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.comment-content h6 {
+    margin: 0 0 5px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.comment-content p {
+    margin: 0;
+    font-size: 13px;
+}
+
+/* Comment form */
+.comment-form {
+    padding: 10px 15px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+}
+
+.comment-form img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.comment-form textarea {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    padding: 8px 12px;
+    font-size: 14px;
+    resize: none;
+}
+
+.comment-form button {
+    margin-left: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.comment-form button:hover {
+    background-color: #0056b3;
+}
+</style>
+
+<div class="post-container">
+    <!-- Post content -->
+    <div class="post-header">
+        {% if post.user.profile.profile_picture %}
+        <img src="{{ post.user.profile.profile_picture.url }}" alt="Profile Picture">
+        {% else %}
+        <img src="{% static 'default-profile.png' %}" alt="Default Profile Picture">
+        {% endif %}
+        <h5>{{ post.user.username }}</h5>
+    </div>
+    <div class="post-body">
+        <p>{{ post.content }}</p>
+        {% if post.image %}
+        <img src="{{ post.image.url }}" alt="Post Image">
+        {% endif %}
+    </div>
+
+    <!-- Comments section -->
+    <div class="comments-section">
+        {% for comment in post.comment_set.all %}
+        <div class="comment">
+            {% if comment.user.profile.profile_picture %}
+            <img src="{{ comment.user.profile.profile_picture.url }}" alt="Profile Picture">
+            {% else %}
+            <img src="{% static 'default-profile.png' %}" alt="Default Profile Picture">
+            {% endif %}
+            <div class="comment-content">
+                <h6>{{ comment.user.username }}</h6>
+                <p>{{ comment.text }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <p>No comments yet. Be the first to comment!</p>
+        {% endfor %}
+    </div>
+
+    <!-- Comment form -->
+    <div class="comment-form">
+        {% if request.user.profile.profile_picture %}
+        <img src="{{ request.user.profile.profile_picture.url }}" alt="Your Profile Picture">
+        {% else %}
+        <img src="{% static 'default-profile.png' %}" alt="Default Profile Picture">
+        {% endif %}
+        <form method="POST">
+            {% csrf_token %}
+            <textarea name="text" placeholder="Add a comment..." rows="1"></textarea>
+            <button type="submit">Post</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
